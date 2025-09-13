@@ -1,12 +1,30 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Header } from "@/components/Header";
+import { CodeEditor } from "@/components/CodeEditor";
+import { TutorialSidebar } from "@/components/TutorialSidebar";
+import { AnalysisPanel } from "@/components/AnalysisPanel";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main className="container mx-auto p-6">
+        <div className="grid grid-cols-12 gap-6 h-[calc(100vh-120px)]">
+          {/* Tutorial Sidebar */}
+          <div className="col-span-3">
+            <TutorialSidebar />
+          </div>
+          
+          {/* Main Code Editor */}
+          <div className="col-span-6">
+            <CodeEditor />
+          </div>
+          
+          {/* Analysis Panel */}
+          <div className="col-span-3">
+            <AnalysisPanel />
+          </div>
+        </div>
+      </main>
     </div>
   );
 };
