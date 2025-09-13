@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { ChevronRight, CheckCircle, Circle, Book, Code, Zap } from "lucide-react";
+import { ChevronRight, CheckCircle, Circle, Book, Code, Zap, Clock, Target } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Lesson {
   id: string;
@@ -22,6 +24,9 @@ const lessons: Lesson[] = [
 
 export const TutorialSidebar = () => {
   const [selectedLesson, setSelectedLesson] = useState("3");
+  
+  const completedLessons = lessons.filter(lesson => lesson.completed).length;
+  const progressPercentage = (completedLessons / lessons.length) * 100;
 
   const getDifficultyColor = (difficulty: Lesson["difficulty"]) => {
     switch (difficulty) {
@@ -39,6 +44,14 @@ export const TutorialSidebar = () => {
           JavaScript Basics
         </h2>
         <p className="text-muted-foreground text-sm mt-1">Interactive lessons and exercises</p>
+        
+        <div className="mt-4 space-y-2">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">Progress</span>
+            <span className="text-primary font-medium">{completedLessons}/{lessons.length} completed</span>
+          </div>
+          <Progress value={progressPercentage} className="h-2" />
+        </div>
       </div>
 
       <div className="p-4">
@@ -57,6 +70,8 @@ export const TutorialSidebar = () => {
               <div className="flex items-start gap-3 w-full">
                 {lesson.completed ? (
                   <CheckCircle className="w-5 h-5 text-success mt-1 shrink-0" />
+                ) : selectedLesson === lesson.id ? (
+                  <Target className="w-5 h-5 text-primary mt-1 shrink-0" />
                 ) : (
                   <Circle className="w-5 h-5 text-muted-foreground mt-1 shrink-0" />
                 )}
@@ -67,11 +82,12 @@ export const TutorialSidebar = () => {
                       {lesson.difficulty}
                     </Badge>
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    {lesson.completed ? "Completed" : "Not started"}
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Clock className="w-3 h-3" />
+                    <span>{lesson.completed ? "Completed" : selectedLesson === lesson.id ? "In Progress" : "5-10 min"}</span>
                   </div>
                 </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground mt-1 shrink-0" />
+                <ChevronRight className={`w-4 h-4 mt-1 shrink-0 transition-transform ${selectedLesson === lesson.id ? 'text-primary rotate-90' : 'text-muted-foreground'}`} />
               </div>
             </Button>
           ))}
